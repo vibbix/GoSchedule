@@ -1,4 +1,4 @@
-package main
+package Parser
 
 import (
 	"github.com/vibbix/GoSchedule/Structs"

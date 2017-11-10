@@ -23,7 +23,7 @@ func FirstComeFirstServeSort(processes []Structs.Process) []Structs.ProcessStep 
 	ct := 0
 	for i := 0; i < len(processes); i++ {
 		for j := 0; j < int(processes[i].BT); j++ {
-			st := Structs.ProcessStep{&processes[i], false}
+			st := Structs.ProcessStep{Process: &processes[i], IsNull: false}
 			slices[ct] = st
 			ct++
 		}

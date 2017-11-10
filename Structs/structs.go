@@ -29,17 +29,14 @@ type TurnAroundTime int
 
 // Process is the base struct for storing process info
 type Process struct {
-	PID      PID         `csv:"pid"`
-	AT       ArrivalTime `csv:"at"`
-	BT       BurstTime   `csv:"bt"`
-	Priority Priority    `csv:"priority"`
-	Period   Period      `csv:"period"`
-}
-
-// ProcessTable is attached to each process
-type ProcessTable struct {
-	WT  WaitTime
-	TAT TurnAroundTime
+	PID            PID         `csv:"pid"`
+	AT             ArrivalTime `csv:"at"`
+	BT             BurstTime   `csv:"bt"`
+	Priority       Priority    `csv:"priority"`
+	Period         Period      `csv:"period"`
+	remainingbt    BurstTime
+	WaitTime       WaitTime
+	TurnAroundTime TurnAroundTime
 }
 
 // ProcessStep is the base unit for each step
@@ -51,6 +48,7 @@ type ProcessStep struct {
 //ScheduleChart is base struct for rendering onto a chart
 type ScheduleChart struct {
 	AlgorithmName         string
+	Processes             []Process
 	Chart                 []ProcessStep
 	AverageWaitTime       WaitTime
 	AverageTurnAroundTime TurnAroundTime
