@@ -1,1 +1,1 @@
-package algorithms
+package Algorithms

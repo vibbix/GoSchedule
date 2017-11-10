@@ -30,8 +30,8 @@ type TurnAroundTime int
 // Process is the base struct for storing process info
 type Process struct {
 	PID      PID         `csv:"pid"`
-	BT       BurstTime   `csv:"bt"`
 	AT       ArrivalTime `csv:"at"`
+	BT       BurstTime   `csv:"bt"`
 	Priority Priority    `csv:"priority"`
 	Period   Period      `csv:"period"`
 }
