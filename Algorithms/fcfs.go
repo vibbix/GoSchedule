@@ -15,18 +15,6 @@ func FirstComeFirstServeSort(processes []Structs.Process) []Structs.ProcessStep 
 		}
 		return processes[i].PID < processes[j].PID
 	})
-	steps := 0
-	for _, p := range processes {
-		steps += int(p.BT)
-	}
-	slices := make([]Structs.ProcessStep, steps)
-	ct := 0
-	for i := 0; i < len(processes); i++ {
-		for j := 0; j < int(processes[i].BT); j++ {
-			st := Structs.ProcessStep{Process: &processes[i], IsNull: false}
-			slices[ct] = st
-			ct++
-		}
-	}
-	return slices
+
+	return linearSort(processes)
 }

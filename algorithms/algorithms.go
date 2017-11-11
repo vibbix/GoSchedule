@@ -34,3 +34,22 @@ func ComputeUtilization(sc Structs.ScheduleChart) {
 	sc.AverageWaitTime = wt / Structs.WaitTime(len(sc.Processes))
 	sc.AverageTurnAroundTime = tat / Structs.TurnAroundTime(len(sc.Processes))
 }
+
+// linearSort t
+func linearSort(processes []Structs.Process) []Structs.ProcessStep {
+	steps := 0
+	for _, p := range processes {
+		steps += int(p.BT)
+	}
+	slices := make([]Structs.ProcessStep, steps)
+	ct := 0
+	//assumes space is 100% occupied, if a null time block exists can crash the whole program
+	for i := 0; i < len(processes); i++ {
+		for j := 0; j < int(processes[i].BT); j++ {
+			st := Structs.ProcessStep{Process: &processes[i], IsNull: false}
+			slices[ct] = st
+			ct++
+		}
+	}
+	return slices
+}

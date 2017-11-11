@@ -39,6 +39,11 @@ type Process struct {
 	TurnAroundTime TurnAroundTime
 }
 
+// NewProcess intializes a new processes
+func NewProcess(pid int, at int, bt int, priority int, period int) Process {
+	return Process{PID: PID(pid), AT: ArrivalTime(at), BT: BurstTime(bt), Priority: Priority(priority), Period: Period(period)}
+}
+
 // ProcessStep is the base unit for each step
 type ProcessStep struct {
 	Process *Process
