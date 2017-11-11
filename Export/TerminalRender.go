@@ -8,6 +8,8 @@ import (
 )
 
 func RenderToTerminal(sc Structs.ScheduleChart) {
+	//header
+	fmt.Printf("Algorithm: %v\nAverage TurnAroundTime: %v\nAverage WaitTime: %v\n", sc.AlgorithmName, sc.AverageTurnAroundTime, sc.AverageWaitTime)
 	color.Set(colorHelper(int(sc.Chart[0].Process.PID)))
 	fmt.Printf("%v", int(sc.Chart[0].Process.PID))
 	for i := 1; i < len(sc.Chart); i++ {

@@ -2,7 +2,7 @@ package Structs
 
 import (
 	// Used to set the data bindings for the process struct explicitly
-	_ "encoding/csv"
+	_ "github.com/gocarina/gocsv"
 )
 
 //PID is the Process ID
