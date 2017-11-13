@@ -50,6 +50,7 @@ func main() {
 			panic(csverr)
 		}
 	}
+	Export.PrintTable(processes)
 	algorithms := make([]Structs.ScheduleChart, 0)
 	if runfcfs {
 		algorithms = append(algorithms, Structs.NewScheduleChart("FirstComeFirstServe", processes, Algorithms.FirstComeFirstServeSort(processes), true))
@@ -57,12 +58,7 @@ func main() {
 	}
 	if runpriority {
 		Structs.ResetAllProcesses(processes)
-		res := Algorithms.PrioritySort(processes)
-		v := Structs.ScheduleChart{}
-		v.AlgorithmName = "Priority"
-		v.Chart = res
-		v.Processes = processes
-		algorithms = append(algorithms, v)
-		Export.RenderToTerminal(v)
+		algorithms = append(algorithms, Structs.NewScheduleChart("Priority", processes, Algorithms.PrioritySort(processes), true))
+		Export.RenderToTerminal(algorithms[len(algorithms)-1])
 	}
 }

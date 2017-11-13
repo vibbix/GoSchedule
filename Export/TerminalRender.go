@@ -41,6 +41,13 @@ func RenderToTerminal(sc Structs.ScheduleChart) {
 	fmt.Println()
 }
 
+//PrintTable prints the process table
+func PrintTable(processes []Structs.Process) {
+	fmt.Printf("PID\t\tAT\t\tBT\t\tPriority\tPeriod\n")
+	for _, p := range processes {
+		fmt.Printf("%d\t\t%d\t\t%d\t\t%d\t\t%d\n", p.PID, p.AT, p.BT, p.Priority, p.Period)
+	}
+}
 func colorHelper(pid int) color.Attribute {
 	if pid%7 == 0 {
 		return color.FgMagenta
