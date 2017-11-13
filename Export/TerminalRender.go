@@ -7,6 +7,7 @@ import (
 	"github.com/vibbix/GoSchedule/Structs"
 )
 
+// RenderToTerminal renders the current ScheduleChart to the terminal
 func RenderToTerminal(sc Structs.ScheduleChart) {
 	//header
 	fmt.Printf("Algorithm: %v\nAverage TurnAroundTime: %v\nAverage WaitTime: %v\n", sc.AlgorithmName, sc.AverageTurnAroundTime, sc.AverageWaitTime)

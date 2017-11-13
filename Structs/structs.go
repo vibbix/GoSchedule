@@ -39,9 +39,23 @@ type Process struct {
 	TurnAroundTime TurnAroundTime
 }
 
+//DeIncrementBurstTime returns true if successfully deincremented
+func (p *Process) DeIncrementBurstTime() bool {
+	if p.remainingbt == 0 {
+		return false
+	}
+	p.remainingbt--
+	return true
+}
+
+//GetRemainingBurstTime returns the remaining amount of bursttime
+func (p *Process) GetRemainingBurstTime() BurstTime {
+	return p.remainingbt
+}
+
 // NewProcess intializes a new processes
 func NewProcess(pid int, at int, bt int, priority int, period int) Process {
-	return Process{PID: PID(pid), AT: ArrivalTime(at), BT: BurstTime(bt), Priority: Priority(priority), Period: Period(period)}
+	return Process{PID: PID(pid), AT: ArrivalTime(at), BT: BurstTime(bt), Priority: Priority(priority), Period: Period(period), remainingbt: BurstTime(bt)}
 }
 
 // ProcessStep is the base unit for each step

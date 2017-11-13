@@ -22,7 +22,7 @@ var (
 
 func main() {
 	//check flags
-	flag.BoolVar(&runfcfs, "fcfs", true, "Run's first come first serve algorith")
+	flag.BoolVar(&runfcfs, "fcfs", true, "Run's first come first serve algorithm")
 	flag.StringVar(&csvfile, "csv", "", "If location is specified, loads PID from csv file")
 	//load csv
 	//parse csv
