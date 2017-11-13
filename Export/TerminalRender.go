@@ -37,6 +37,8 @@ func RenderToTerminal(sc Structs.ScheduleChart) {
 		color.Set(colorHelper(int(sc.Chart[i].Process.PID)))
 		fmt.Printf("=")
 	}
+	color.Set(color.FgWhite)
+	fmt.Println()
 }
 
 func colorHelper(pid int) color.Attribute {

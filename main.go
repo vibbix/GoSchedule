@@ -20,10 +20,15 @@ var (
 	runsjf      int
 )
 
-func main() {
+func init() {
 	//check flags
 	flag.BoolVar(&runfcfs, "fcfs", true, "Run's first come first serve algorithm")
+	flag.BoolVar(&runpriority, "priority", true, "Run's priority algorithm")
 	flag.StringVar(&csvfile, "csv", "", "If location is specified, loads PID from csv file")
+}
+
+func main() {
+	flag.Parse()
 	//load csv
 	//parse csv
 	//sanity check CSV
@@ -37,6 +42,7 @@ func main() {
 		Structs.NewProcess(4, 0, 3, 3, 0),
 		Structs.NewProcess(5, 4, 2, 2, 0),
 	}
+	//processes := make([]Structs.Process, 0)
 	if csvfile != "" {
 		var csverr error
 		processes, csverr = Parser.LoadCSV(csvfile)
@@ -44,13 +50,19 @@ func main() {
 			panic(csverr)
 		}
 	}
-	res := Algorithms.FirstComeFirstServeSort(processes)
-	// for i := 0; i < len(res); i++ {
-	// 	fmt.Printf("Step %v: %+v\n", i, res[i].Process.PID)
-	// }
-	v := Structs.ScheduleChart{}
-	v.AlgorithmName = "FirstComeFirstServe"
-	v.Chart = res
-	v.Processes = processes
-	Export.RenderToTerminal(v)
+	algorithms := make([]Structs.ScheduleChart, 0)
+	if runfcfs {
+		algorithms = append(algorithms, Structs.NewScheduleChart("FirstComeFirstServe", processes, Algorithms.FirstComeFirstServeSort(processes), true))
+		Export.RenderToTerminal(algorithms[len(algorithms)-1])
+	}
+	if runpriority {
+		Structs.ResetAllProcesses(processes)
+		res := Algorithms.PrioritySort(processes)
+		v := Structs.ScheduleChart{}
+		v.AlgorithmName = "Priority"
+		v.Chart = res
+		v.Processes = processes
+		algorithms = append(algorithms, v)
+		Export.RenderToTerminal(v)
+	}
 }

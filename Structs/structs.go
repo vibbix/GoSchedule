@@ -53,6 +53,12 @@ func (p *Process) GetRemainingBurstTime() BurstTime {
 	return p.remainingbt
 }
 
+//Reset resets the Process remaining bursttime
+func (p *Process) Reset() {
+	p.remainingbt++
+	p.remainingbt = p.BT
+}
+
 // NewProcess intializes a new processes
 func NewProcess(pid int, at int, bt int, priority int, period int) Process {
 	return Process{PID: PID(pid), AT: ArrivalTime(at), BT: BurstTime(bt), Priority: Priority(priority), Period: Period(period), remainingbt: BurstTime(bt)}
@@ -71,4 +77,50 @@ type ScheduleChart struct {
 	Chart                 []ProcessStep
 	AverageWaitTime       WaitTime
 	AverageTurnAroundTime TurnAroundTime
+}
+
+// ComputeUtilization calculuates the TurnAroundTime and WaitTime for all processes and the efficiency
+// of the scheduler
+func (sc *ScheduleChart) ComputeUtilization() {
+	var (
+		wt  WaitTime
+		tat TurnAroundTime
+	)
+	for i := 0; i < len(sc.Processes); i++ {
+		p := sc.Processes[i]
+		lastexectime := 0
+		curwaittime := 0
+		p.TurnAroundTime = TurnAroundTime(lastexectime - int(p.AT))
+		for i := int(p.AT); i < len(sc.Chart); i++ {
+			if !sc.Chart[i].IsNull && sc.Chart[i].Process.PID == p.PID {
+				lastexectime = i
+			}
+		}
+		p.TurnAroundTime = TurnAroundTime(lastexectime - int(p.AT))
+		for i := int(p.AT); i < lastexectime; i++ {
+			if !sc.Chart[i].IsNull && sc.Chart[i].Process.PID == p.PID {
+				curwaittime++
+			}
+		}
+		wt += WaitTime(curwaittime)
+		tat += TurnAroundTime(p.TurnAroundTime)
+	}
+	sc.AverageWaitTime = wt / WaitTime(len(sc.Processes))
+	sc.AverageTurnAroundTime = tat / TurnAroundTime(len(sc.Processes))
+}
+
+//NewScheduleChart creates a new Schedule Chart
+func NewScheduleChart(name string, processes []Process, chart []ProcessStep, computeutilization bool) ScheduleChart {
+	sc := ScheduleChart{AlgorithmName: name, Processes: processes, Chart: chart}
+	if computeutilization {
+		sc.ComputeUtilization()
+	}
+	return sc
+}
+
+//ResetAllProcesses resets the remaining BT in each processes
+func ResetAllProcesses(processes []Process) {
+	for i := 0; i < len(processes); i++ {
+		processes[i].Reset()
+	}
 }
