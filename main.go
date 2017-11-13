@@ -18,12 +18,14 @@ var (
 	runrr       int
 	runvarrr    int
 	runsjf      int
+	runsrtf     bool
 )
 
 func init() {
 	//check flags
 	flag.BoolVar(&runfcfs, "fcfs", true, "Run's first come first serve algorithm")
 	flag.BoolVar(&runpriority, "priority", true, "Run's priority algorithm")
+	flag.BoolVar(&runsrtf, "srtf", true, "Run's ShortestRemainingTimeFirst algorithm")
 	flag.StringVar(&csvfile, "csv", "", "If location is specified, loads PID from csv file")
 }
 
@@ -59,6 +61,11 @@ func main() {
 	if runpriority {
 		Structs.ResetAllProcesses(processes)
 		algorithms = append(algorithms, Structs.NewScheduleChart("Priority", processes, Algorithms.PrioritySort(processes), true))
+		Export.RenderToTerminal(algorithms[len(algorithms)-1])
+	}
+	if runsrtf {
+		Structs.ResetAllProcesses(processes)
+		algorithms = append(algorithms, Structs.NewScheduleChart("ShortestRemainingTimeFirst", processes, Algorithms.ShortestRemainingTimeFirstSort(processes), true))
 		Export.RenderToTerminal(algorithms[len(algorithms)-1])
 	}
 }

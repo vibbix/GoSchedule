@@ -92,7 +92,7 @@ func (sc *ScheduleChart) ComputeUtilization() {
 		curwaittime := 0
 		p.TurnAroundTime = TurnAroundTime(lastexectime - int(p.AT))
 		for i := int(p.AT); i < len(sc.Chart); i++ {
-			if !sc.Chart[i].IsNull && sc.Chart[i].Process.PID == p.PID {
+			if !sc.Chart[i].IsNull && sc.Chart[i].Process != nil && sc.Chart[i].Process.PID == p.PID {
 				lastexectime = i
 			}
 		}
