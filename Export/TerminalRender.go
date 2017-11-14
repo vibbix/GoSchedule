@@ -10,20 +10,22 @@ import (
 // RenderToTerminal renders the current ScheduleChart to the terminal
 func RenderToTerminal(sc Structs.ScheduleChart) {
 	//header
-	fmt.Printf("Algorithm: %v\nAverage TurnAroundTime: %v\nAverage WaitTime: %v\n", sc.AlgorithmName, sc.AverageTurnAroundTime, sc.AverageWaitTime)
+	fmt.Printf("Algorithm: %v\nAverage TurnAroundTime: %v\nAverage WaitTime: %v\nTotalTime: %d\n", sc.AlgorithmName, sc.AverageTurnAroundTime, sc.AverageWaitTime, len(sc.Chart))
 	color.Set(colorHelper(int(sc.Chart[0].Process.PID)))
 	fmt.Printf("%v", int(sc.Chart[0].Process.PID))
 	for i := 1; i < len(sc.Chart); i++ {
-		if sc.Chart[i].IsNull {
+		prev := sc.Chart[i-1].Process
+		curr := sc.Chart[i].Process
+		if curr == nil {
 			color.Set(color.FgBlack, color.BgWhite)
 			fmt.Printf("N")
 			color.Set(color.BgBlack)
 			continue
-		} else if sc.Chart[i-1].IsNull && !sc.Chart[i].IsNull {
+		} else if prev == nil && curr != nil {
 			color.Set(colorHelper(int(sc.Chart[i].Process.PID)))
 			fmt.Printf("%d", int(sc.Chart[i].Process.PID))
 			continue
-		} else if sc.Chart[i-1].IsNull || sc.Chart[i-1].Process.PID == sc.Chart[i].Process.PID {
+		} else if prev == nil || (prev.PID == curr.PID) {
 			fmt.Printf(" ")
 			continue
 		}
@@ -32,14 +34,14 @@ func RenderToTerminal(sc Structs.ScheduleChart) {
 	}
 	fmt.Println()
 	for i := 0; i < len(sc.Chart); i++ {
-		if sc.Chart[i].IsNull {
+		if sc.Chart[i].Process == nil || sc.Chart[i].IsNull {
 			color.Set(color.FgBlack, color.BgWhite)
 			fmt.Printf("N")
 			color.Set(color.BgBlack)
-			continue
+		} else if sc.Chart[i].Process != nil {
+			color.Set(colorHelper(int(sc.Chart[i].Process.PID)))
+			fmt.Printf("=")
 		}
-		color.Set(colorHelper(int(sc.Chart[i].Process.PID)))
-		fmt.Printf("=")
 	}
 	color.Set(color.FgWhite)
 	fmt.Println()

@@ -32,7 +32,7 @@ func init() {
 	flag.BoolVar(&runsrtf, "srtf", true, "Run's ShortestRemainingTimeFirst algorithm")
 	flag.IntVar(&runrr, "rr", 2, "Run's the RoundRobin Algorithm with a quantum greater than 1")
 	flag.IntVar(&runvarrr, "varrr", 2, "Run's the variable RoundRobin Algorithm with a quantum greater than 1")
-	flag.StringVar(&csvfile, "csv", "", "If location is specified, loads PID from csv file")
+	flag.StringVar(&csvfile, "csv", "", "If location is specified, loads processes from csv file")
 }
 
 func main() {
