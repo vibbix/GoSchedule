@@ -1,7 +1,6 @@
 package Algorithms
 
 import (
-	"fmt"
 	"sort"
 
 	"github.com/vibbix/GoSchedule/Structs"
@@ -9,7 +8,6 @@ import (
 
 //RoundRobinSort uses the RoundRobin algorithm to schedule processes
 func RoundRobinSort(processes []Structs.Process, quantum int, variable bool) []Structs.ProcessStep {
-	fmt.Println("exec")
 	lastexectime := make([]int, len(processes))
 	steps := 0
 	for _, proc := range processes {
@@ -18,25 +16,30 @@ func RoundRobinSort(processes []Structs.Process, quantum int, variable bool) []S
 	slices := make([]Structs.ProcessStep, steps)
 	for i := 0; i < steps; i++ {
 		cproc := getRRStack(processes, i, lastexectime)
+		if i > 1 && slices[i-1].IsNull == false && slices[i-1].Process == nil {
+			i -= 2
+			continue
+		}
 		if len(cproc) == 0 {
 			slices[i] = Structs.ProcessStep{Process: nil, IsNull: true}
-			//extend for null
 			steps++
 			slices = append(slices, make([]Structs.ProcessStep, 1)...)
 		} else {
-			//pass by value fix
 			cp, cpi := getProcess(processes, int(cproc[0].PID))
 			for j := 0; j < quantum; j++ {
 				if cp.DeIncrementBurstTime() {
 					slices[i] = Structs.ProcessStep{Process: cp, IsNull: false}
 					lastexectime[cpi] = i
+					//i++
 				} else if !variable {
 					slices[i] = Structs.ProcessStep{Process: nil, IsNull: true}
 					steps++
 					slices = append(slices, make([]Structs.ProcessStep, 1)...)
+					//i++
 				} else {
 					break
 				}
+				i++
 			}
 		}
 	}

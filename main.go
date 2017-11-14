@@ -30,8 +30,8 @@ func init() {
 	flag.BoolVar(&runpresjf, "presjf", true, "Run's shortest job first algorithm premeptively")
 	flag.BoolVar(&runpriority, "priority", true, "Run's priority algorithm")
 	flag.BoolVar(&runsrtf, "srtf", true, "Run's ShortestRemainingTimeFirst algorithm")
-	flag.IntVar(&runrr, "rr", 1, "Run's the RoundRobin Algorithm with a quantum greater than 1")
-	flag.IntVar(&runvarrr, "varrr", 1, "Run's the variable RoundRobin Algorithm with a quantum greater than 1")
+	flag.IntVar(&runrr, "rr", 2, "Run's the RoundRobin Algorithm with a quantum greater than 1")
+	flag.IntVar(&runvarrr, "varrr", 2, "Run's the variable RoundRobin Algorithm with a quantum greater than 1")
 	flag.StringVar(&csvfile, "csv", "", "If location is specified, loads PID from csv file")
 }
 
@@ -49,6 +49,8 @@ func main() {
 		Structs.NewProcess(3, 2, 8, 5, 0),
 		Structs.NewProcess(4, 0, 3, 3, 0),
 		Structs.NewProcess(5, 4, 2, 2, 0),
+		//Structs.NewProcess(6, 3, 3, 4, 0),
+		//Structs.NewProcess(7, 26, 5, 2, 0),
 	}
 	//processes := make([]Structs.Process, 0)
 	if csvfile != "" {
