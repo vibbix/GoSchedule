@@ -31,6 +31,9 @@ Usage of ./GoSchedule:
     	Run's ShortestRemainingTimeFirst algorithm (default true)
   -varrr int
     	Run's the variable RoundRobin Algorithm with a quantum greater than 1 (default 2)
+
+ ❯ ./GoSchedule -fcfs=false -csv="./ex1.csv" -varrr=-1 -rr=3
+
 ```
 
 ## CSV Format
