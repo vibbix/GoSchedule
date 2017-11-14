@@ -1,6 +1,6 @@
 # GoSchedule
 Process scheduler written in GoLang
-
+By Mark Beznos
 ## How to build
 
 ```bash
