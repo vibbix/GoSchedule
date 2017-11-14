@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 
 	"github.com/vibbix/GoSchedule/Parser"
 
@@ -17,16 +18,19 @@ var (
 	runpriority bool
 	runrr       int
 	runvarrr    int
-	runsjf      int
+	runsjf      bool
+	runpresjf   bool
 	runsrtf     bool
 )
 
 func init() {
 	//check flags
 	flag.BoolVar(&runfcfs, "fcfs", true, "Run's first come first serve algorithm")
+	flag.BoolVar(&runsjf, "sjf", true, "Run's shortest job first algorithm none-premeptively")
+	flag.BoolVar(&runpresjf, "presjf", true, "Run's shortest job first algorithm premeptively")
 	flag.BoolVar(&runpriority, "priority", true, "Run's priority algorithm")
 	flag.BoolVar(&runsrtf, "srtf", true, "Run's ShortestRemainingTimeFirst algorithm")
-	flag.StringVar(&csvfile, "csv", "", "If location is specified, loads PID from csv file")
+	flag.StringVar(&csvfile, "csv", "/Users/vibbix/go/src/github.com/vibbix/GoSchedule/ex2.csv", "If location is specified, loads PID from csv file")
 }
 
 func main() {
@@ -51,10 +55,13 @@ func main() {
 		if csverr != nil {
 			panic(csverr)
 		}
+	} else {
+		fmt.Println("Using default values")
 	}
 	Export.PrintTable(processes)
 	algorithms := make([]Structs.ScheduleChart, 0)
 	if runfcfs {
+		Structs.ResetAllProcesses(processes)
 		algorithms = append(algorithms, Structs.NewScheduleChart("FirstComeFirstServe", processes, Algorithms.FirstComeFirstServeSort(processes), true))
 		Export.RenderToTerminal(algorithms[len(algorithms)-1])
 	}
@@ -66,6 +73,16 @@ func main() {
 	if runsrtf {
 		Structs.ResetAllProcesses(processes)
 		algorithms = append(algorithms, Structs.NewScheduleChart("ShortestRemainingTimeFirst", processes, Algorithms.ShortestRemainingTimeFirstSort(processes), true))
+		Export.RenderToTerminal(algorithms[len(algorithms)-1])
+	}
+	if runpresjf {
+		Structs.ResetAllProcesses(processes)
+		algorithms = append(algorithms, Structs.NewScheduleChart("PreemptiveShortestJobFirst", processes, Algorithms.PreemptiveShortestJobFirstSort(processes), true))
+		Export.RenderToTerminal(algorithms[len(algorithms)-1])
+	}
+	if runsjf {
+		Structs.ResetAllProcesses(processes)
+		algorithms = append(algorithms, Structs.NewScheduleChart("ShortestJobFirst", processes, Algorithms.NonePreemptiveShortestJobFirstSort(processes), true))
 		Export.RenderToTerminal(algorithms[len(algorithms)-1])
 	}
 }

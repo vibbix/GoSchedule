@@ -51,3 +51,12 @@ func linearSort(processes []Structs.Process) []Structs.ProcessStep {
 	}
 	return slices
 }
+
+func getProcess(processes []Structs.Process, PID int) *Structs.Process {
+	for i := 0; i < len(processes); i++ {
+		if int(processes[i].PID) == PID {
+			return &processes[i]
+		}
+	}
+	return nil
+}

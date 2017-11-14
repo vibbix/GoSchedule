@@ -19,7 +19,11 @@ func RenderToTerminal(sc Structs.ScheduleChart) {
 			fmt.Printf("N")
 			color.Set(color.BgBlack)
 			continue
-		} else if sc.Chart[i-1].Process.PID == sc.Chart[i].Process.PID {
+		} else if sc.Chart[i-1].IsNull && !sc.Chart[i].IsNull {
+			color.Set(colorHelper(int(sc.Chart[i].Process.PID)))
+			fmt.Printf("%d", int(sc.Chart[i].Process.PID))
+			continue
+		} else if sc.Chart[i-1].IsNull || sc.Chart[i-1].Process.PID == sc.Chart[i].Process.PID {
 			fmt.Printf(" ")
 			continue
 		}
