@@ -30,7 +30,9 @@ func init() {
 	flag.BoolVar(&runpresjf, "presjf", true, "Run's shortest job first algorithm premeptively")
 	flag.BoolVar(&runpriority, "priority", true, "Run's priority algorithm")
 	flag.BoolVar(&runsrtf, "srtf", true, "Run's ShortestRemainingTimeFirst algorithm")
-	flag.StringVar(&csvfile, "csv", "/Users/vibbix/go/src/github.com/vibbix/GoSchedule/ex2.csv", "If location is specified, loads PID from csv file")
+	flag.IntVar(&runrr, "rr", 1, "Run's the RoundRobin Algorithm with a quantum greater than 1")
+	flag.IntVar(&runvarrr, "varrr", 1, "Run's the variable RoundRobin Algorithm with a quantum greater than 1")
+	flag.StringVar(&csvfile, "csv", "", "If location is specified, loads PID from csv file")
 }
 
 func main() {
@@ -83,6 +85,16 @@ func main() {
 	if runsjf {
 		Structs.ResetAllProcesses(processes)
 		algorithms = append(algorithms, Structs.NewScheduleChart("ShortestJobFirst", processes, Algorithms.NonePreemptiveShortestJobFirstSort(processes), true))
+		Export.RenderToTerminal(algorithms[len(algorithms)-1])
+	}
+	if runrr >= 1 {
+		Structs.ResetAllProcesses(processes)
+		algorithms = append(algorithms, Structs.NewScheduleChart("RoundRobin", processes, Algorithms.RoundRobinSort(processes, runrr, false), true))
+		Export.RenderToTerminal(algorithms[len(algorithms)-1])
+	}
+	if runvarrr >= 1 {
+		Structs.ResetAllProcesses(processes)
+		algorithms = append(algorithms, Structs.NewScheduleChart("VariableRoundRobin", processes, Algorithms.RoundRobinSort(processes, runvarrr, true), true))
 		Export.RenderToTerminal(algorithms[len(algorithms)-1])
 	}
 }

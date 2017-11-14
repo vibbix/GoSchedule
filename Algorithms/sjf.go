@@ -21,7 +21,7 @@ func NonePreemptiveShortestJobFirstSort(processes []Structs.Process) []Structs.P
 			steps++
 			slices = append(slices, make([]Structs.ProcessStep, 1)...)
 		} else {
-			cp := getProcess(processes, int(cproc[0].PID))
+			cp, _ := getProcess(processes, int(cproc[0].PID))
 			for cp.DeIncrementBurstTime() {
 				//fmt.Printf("Step #%d: PID %d, rBT %d\n", i, cp.PID, cp.GetRemainingBurstTime())
 				slices[i] = Structs.ProcessStep{Process: cp, IsNull: false}
@@ -49,7 +49,7 @@ func PreemptiveShortestJobFirstSort(processes []Structs.Process) []Structs.Proce
 			slices = append(slices, make([]Structs.ProcessStep, 1)...)
 		} else {
 			//pass by value fix
-			cp := getProcess(processes, int(cproc[0].PID))
+			cp, _ := getProcess(processes, int(cproc[0].PID))
 			if cp.DeIncrementBurstTime() {
 				slices[i] = Structs.ProcessStep{Process: cp, IsNull: false}
 			}
